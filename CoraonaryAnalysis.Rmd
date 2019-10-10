@@ -1,0 +1,278 @@
+---
+title: "Coronary Disease Data Analysis"
+author: "Paul G. Smith"
+date: "10/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Coronary Disease Data Analysis
+
+This is an example analysis in R to showcase some of the methods and tools available to analyze a sample dataset. Below is a link to the heart disease data sets that can be used in this analysis. While each study contains a broad range of data collected many participants, this analysis will focus on a core set of 14 variables from one of the studies (cleveland.data).
+
+This file describes the contents of the heart-disease directory available at <https:/https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/>
+
+   This directory contains 4 databases concerning heart disease diagnosis.
+   All attributes are numeric-valued.  The data was collected from the
+   four following locations:
+
+     1. Cleveland Clinic Foundation (cleveland.data)
+     2. Hungarian Institute of Cardiology, Budapest (hungarian.data)
+     3. V.A. Medical Center, Long Beach, CA (long-beach-va.data)
+     4. University Hospital, Zurich, Switzerland (switzerland.data)
+
+   Each database has the same instance format.  While the databases have 76
+   raw attributes, only 14 of them are actually used.  Thus I've taken the
+   liberty of making 2 copies of each database: one with all the attributes
+   and 1 with the 14 attributes actually used in past experiments.
+
+   The authors of the databases have requested:
+
+      ...that any publications resulting from the use of the data include the 
+      names of the principal investigator responsible for the data collection
+      at each institution.  They would be:
+
+       1. Hungarian Institute of Cardiology. Budapest: Andras Janosi, M.D.
+       2. University Hospital, Zurich, Switzerland: William Steinbrunn, M.D.
+       3. University Hospital, Basel, Switzerland: Matthias Pfisterer, M.D.
+       4. V.A. Medical Center, Long Beach and Cleveland Clinic Foundation:
+
+
+First step in this process is to load the required libraies.
+
+```{r libraries, include=FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+The next step is to load the data from the CSV file in the main directory, to name each of the columns, and then take a quick look at the initial structure of the data.
+
+```{r loadData}
+chd <- read.csv2("cleveland.csv", sep=",", as.is=TRUE)
+colnames(chd) <- c("age","sex","cp","trestbps","chol","fbs","restecg","thalach",
+                   "exang","oldpeak","slope","ca","thal","outcome")
+str(chd)
+```
+Next we need to change the type of the variables which were imported as character strings (chr), and set the levels for the factors. There is a document in the main directory which explains each variable and the possible values in the data set (see heart-disease-names.txt)
+
+```{r prepData}
+# convert age to a numeric variable
+chd$age <- as.numeric(chd$age)
+# convert sex to a factor with two values
+chd$sex <- as.factor(as.integer(chd$sex))
+levels(chd$sex) <- c("female","male")
+# convert cp to a factor with four values
+chd$cp <- as.factor(as.integer(chd$cp))
+levels(chd$cp) <- c("typical angina","atypical angina",
+                     "non-anginal pain","asymptomatic")
+# convert trestbps to a numeric variable
+chd$trestbps <- as.numeric(chd$trestbps)
+# convert chol to a numeric variable
+chd$chol <- as.numeric(chd$chol)
+# convert fbs to a logical variable (True/False)
+chd$fbs <- as.logical(as.integer(chd$fbs))
+# convert restecg to a factor with three values
+chd$restecg <- as.factor(as.integer(chd$restecg))
+levels(chd$restecg) <- c("normal","ST-T wave abnormality",
+                         "left ventricular hypertrophy")
+# convert thalach to a numeric variable
+chd$thalach <- as.numeric(chd$thalach)
+# convert exang to a factor with two values
+chd$exang <- as.factor(as.integer(chd$exang))
+levels(chd$exang) <- c("no","yes")
+# convert slope to a factor with three values
+chd$slope <- as.factor(as.integer(chd$slope))
+levels(chd$slope) <- c("upsloping","flat","downsloping")
+# convert ca to a numeric variable
+chd$ca <- as.numeric(chd$ca)
+# convert thal to a factor with three values
+chd$thal <- as.factor(as.integer(chd$thal))
+levels(chd$thal) <- c("normal","fixed defect","reversable defect")
+# convert outcome to a factor
+chd$outcome <- as.factor(as.integer(chd$outcome))
+
+# look at the first 10, last 10 rows, and structure of the dataset
+head(chd)
+tail(chd)
+dim(chd)
+str(chd)
+
+```
+Next, let's take a look at the distribution of data within each variable (column). The summary function will be used to provide a different set of descriptive statistics, depending on the type of variable used.
+
+* Numeric Variables - summary() provides the range, quartiles, median, and mean.
+* Character variables - summary() only provides the length and class (chr) of the variable.
+* Factor variables - summary() provides a the label and count for each of the factor levels.
+* Logical variables - summay() provides a count of TRUE and FALSE values.
+
+```{r summarize}
+summary(chd)
+```
+The rest to be integrated into this article.
+
+```{r unfinished}
+
+# group1: no heart disease (outcome is 0)
+group1 <- chd[chd$outcome==0,]
+
+# group12: nheart disease (outcome is 1, 2, 3, or 4)
+group2 <- chd[chd$outcome!=0,]
+
+# check both groups total 302 rows
+nrow(group1)+nrow(group2)
+
+# let's do some boxplots of the integer variables
+
+#chd$age <- as.integer(chd$age)
+#chd$trestbps <- as.integer(chd$trestbps)
+#chd$chol <- as.integer(chd$chol)
+#chd$thalach <- as.integer(chd$thalach)
+
+boxplot(group1$age, group2$age, col="CadetBlue", pch=20, 
+        names=c("CHD absent", "CHD present"),  
+        ylab="Participant age")
+
+# now do the same in ggplot
+groupCHD <- group2
+# replace all values of outcome in group2 with "1" - 
+groupCHD$outcome <- c(1)
+CHDgroup <- rbind(group1, groupCHD)
+CHDgroup$outcome <- droplevels(CHDgroup$outcome)
+levels(CHDgroup$outcome) <- c("noCHD", "CHD")
+
+a <- ggplot(CHDgroup, aes(x=outcome, y=age)) 
+a + geom_boxplot()
+a + geom_boxplot() + geom_point()
+a + geom_boxplot() + geom_point() + geom_jitter()
+a + geom_point(size=3) + geom_jitter(size=2) + 
+  geom_boxplot(alpha=.4, fill=c("navy","yellow2"))
+
+a + geom_point(size=3) + geom_jitter(size=2) + 
+  geom_boxplot(alpha=.4, fill=c("navy","yellow2")) +
+  labs(title="Participant Age by Outcome", 
+       y="Count", x="Participant Age") +
+  theme_bw() +
+  theme(axis.line = element_line(size=1, colour = "black"),
+        panel.grid.major = element_line(colour = "#d3d3d3"),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(), panel.background = element_blank(),
+        plot.title = element_text(size = 14, family = "Tahoma", face = "bold"),
+        text=element_text(family="Tahoma"),
+        axis.text.x=element_text(colour="black", size = 9, face="bold"),
+        axis.text.y=element_text(colour="black", size = 9, face="bold")) +
+  scale_fill_brewer(palette="Accent")
+
+b <- ggplot(CHDgroup, aes(x=age))
+b +  geom_histogram(bins=30)
+
+b +  geom_histogram(bins=30, color="black", fill="navy", alpha=0.4) +
+  labs(title="Participant Count by Age",
+       y="Count", x="Participant Age") +
+  theme_bw() +
+  theme(axis.line = element_line(size=1, colour = "black"),
+        panel.grid.major = element_line(colour = "#d3d3d3"),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(), panel.background = element_blank(),
+        plot.title = element_text(size = 14, family = "Tahoma", face = "bold"),
+        text=element_text(family="Tahoma"),
+        axis.text.x=element_text(colour="black", size = 9, face="bold"),
+        axis.text.y=element_text(colour="black", size = 9, face="bold")) +
+  scale_fill_brewer(palette="Accent")
+
+
+ggplot(CHDgroup, aes(sex)) + 
+  geom_bar(fill=c("navy","yellow2"), alpha=0.4) + 
+  labs(title="Participant Count by Sex",
+       y="Count", x="Participant Sex") +
+  theme_bw() +
+  theme(axis.line = element_line(size=1, colour = "black"),
+        panel.grid.major = element_line(colour = "#d3d3d3"),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(), panel.background = element_blank(),
+        plot.title = element_text(size = 14, family = "Tahoma", face = "bold"),
+        text=element_text(family="Tahoma"),
+        axis.text.x=element_text(colour="black", size = 9, face="bold"),
+        axis.text.y=element_text(colour="black", size = 9, face="bold")) +
+  scale_fill_brewer(palette="Accent")
+
+df <- CHDgroup %>%
+  group_by(sex) %>%
+  summarize(counts = n())
+df
+c <- ggplot(df, aes(x=sex, y=counts))
+c + geom_bar(stat = "identity") +
+  geom_text(aes(label=counts), vjust = -0.3) +
+  labs(title="Participant Count by Sex",
+       y="Count", x="Participant Sex") +
+  theme_bw() +
+  theme(axis.line = element_line(size=1, colour = "black"),
+        panel.grid.major = element_line(colour = "#d3d3d3"),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(), panel.background = element_blank(),
+        plot.title = element_text(size = 14, family = "Tahoma", face = "bold"),
+        text=element_text(family="Tahoma"),
+        axis.text.x=element_text(colour="black", size = 9, face="bold"),
+        axis.text.y=element_text(colour="black", size = 9, face="bold")) +
+  scale_fill_brewer(palette="Accent")
+
+d <- ggplot(CHDgroup, aes(x=age))
+d +  geom_histogram(bins=30, aes(color=sex), fill="white",
+                    position="identity") +
+  scale_color_manual(values = c("#00AFBB", "#E7B800"))
+
+d +  geom_histogram(aes(color=sex, fill=sex), alpha=0.4,
+                    position="identity") +
+  labs(title="Participant Count by Age and Sex",
+       y="Count", x="Participant Age") +
+  theme_bw() +
+  theme(axis.line = element_line(size=1, colour = "black"),
+        panel.grid.major = element_line(colour = "#d3d3d3"),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(), panel.background = element_blank(),
+        plot.title = element_text(size = 14, family = "Tahoma", face = "bold"),
+        text=element_text(family="Tahoma"),
+        axis.text.x=element_text(colour="black", size = 9, face="bold"),
+        axis.text.y=element_text(colour="black", size = 9, face="bold")) +
+  scale_fill_brewer(palette="Accent")
+
+df <- CHDgroup
+df$sex <- factor(df$sex, 
+                 levels=levels(df$sex)[order(levels(df$sex), 
+                                             decreasing=T)])
+e <- ggplot(df, aes(x=age))
+e + geom_histogram(bins=30, aes(color=sex, fill=sex), alpha=0.4,
+                    position="identity") +
+  scale_color_manual(values = c("navy", "black")) +
+  scale_fill_manual(values = c("navy", "yellow2")) 
+
+e +  geom_histogram(bins=30, aes(color=sex, fill=sex), alpha=0.4,
+                    position="identity") +
+  labs(title="Participant Count by Sex and Outcome Group",
+       y="Count", x="Participant Age") +
+  facet_grid(cols=vars(outcome))
+
+  
+e +  geom_histogram(bins=30, aes(color=sex, fill=sex),alpha=0.4,
+                      position="identity") +
+  labs(title="Participant Count by Sex and Outcome Group",
+       y="Count", x="Participant Age") +
+  facet_grid(cols=vars(outcome)) +
+    theme_bw() +
+    theme(axis.line = element_line(size=1, colour = "black"),
+          panel.grid.major = element_line(colour = "#d3d3d3"),
+          panel.grid.minor = element_blank(),
+          panel.border = element_blank(), panel.background = element_blank(),
+          plot.title = element_text(size = 14, 
+                                    family = "Tahoma", face = "bold"),
+          text=element_text(family="Tahoma"),
+          axis.text.x=element_text(colour="black", size = 9, face="bold"),
+          axis.text.y=element_text(colour="black", size = 9, face="bold")) +
+    scale_fill_brewer(palette="Accent")
+
+```
+
+The End....
