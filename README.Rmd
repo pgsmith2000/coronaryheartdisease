@@ -39,13 +39,13 @@ source("190_Write out chd.R", echo = TRUE)
 ## Create some boxplots
 
 ```{r boxplots, echo=TRUE, message=TRUE, warning=TRUE}
-# Read in the inital downloaded BRFSS dataset in SAS XPT format
+# Create boxplots
 source("200_Boxplots.R", echo = TRUE)
 ```
 ## Create some histograms and other stuff
 
 ```{r histograms, echo=TRUE, message=TRUE, warning=TRUE}
-# Read in the inital downloaded BRFSS dataset in SAS XPT format
+# Create histograms
 source("205_Histograms.R", echo = TRUE)
 ```
 

@@ -134,7 +134,7 @@ source("190_Write out chd.R", echo = TRUE)
 ## Create some boxplots
 
 ``` r
-# Read in the inital downloaded BRFSS dataset in SAS XPT format
+# Create boxplots
 source("200_Boxplots.R", echo = TRUE)
 ```
 
@@ -155,7 +155,8 @@ source("200_Boxplots.R", echo = TRUE)
     ##     intersect, setdiff, setequal, union
 
     ## 
-    ## > chd <- read.csv("./data/chd.csv", header = TRUE, sep = ",")
+    ## > chd <- data.frame(read.csv("./data/chd.csv", header = TRUE, 
+    ## +     sep = ","))
     ## 
     ## > boxplot(group1$age, group2$age, col = "CadetBlue", 
     ## +     pch = 20, names = c("CHD absent", "CHD present"), ylab = "Participant age")
@@ -173,28 +174,10 @@ source("200_Boxplots.R", echo = TRUE)
     ## 
     ## > levels(CHDgroup$outcome) <- c("noCHD", "CHD")
     ## 
-    ## > a <- ggplot(CHDgroup, aes(x = outcome, y = age))
+    ## > typeof(CHDgroup$outcome)
+    ## [1] "integer"
     ## 
-    ## > a + geom_boxplot()
-
-![](README_files/figure-gfm/boxplots-2.png)<!-- -->
-
-    ## 
-    ## > a + geom_boxplot() + geom_point()
-
-![](README_files/figure-gfm/boxplots-3.png)<!-- -->
-
-    ## 
-    ## > a + geom_boxplot() + geom_point() + geom_jitter()
-
-![](README_files/figure-gfm/boxplots-4.png)<!-- -->
-
-    ## 
-    ## > a + geom_point(size = 3) + geom_jitter(size = 2) + 
-    ## +     geom_boxplot(alpha = 0.4, fill = c("navy", "yellow2"))
-
-![](README_files/figure-gfm/boxplots-5.png)<!-- -->
-
+    ## > a <- ggplot(CHDgroup, aes(x = outcome, y = age, ))
     ## 
     ## > a + geom_point(size = 3) + geom_jitter(size = 2) + 
     ## +     geom_boxplot(alpha = 0.4, fill = c("navy", "yellow2")) + 
@@ -245,11 +228,11 @@ source("200_Boxplots.R", echo = TRUE)
     ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
     ## font family not found in Windows font database
 
-![](README_files/figure-gfm/boxplots-6.png)<!-- --> \#\# Create some
+![](README_files/figure-gfm/boxplots-2.png)<!-- --> \#\# Create some
 histograms and other stuff
 
 ``` r
-# Read in the inital downloaded BRFSS dataset in SAS XPT format
+# Create histograms
 source("205_Histograms.R", echo = TRUE)
 ```
 
