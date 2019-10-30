@@ -5,10 +5,6 @@ library(dplyr)
 # Read in the data set
 chd <- data.frame(read.csv("./data/chd.csv", header=TRUE, sep=","))
 
-boxplot(group1$age, group2$age, col = "CadetBlue", 
-     pch = 20, names = c("CHD absent", "CHD present"), ylab = "Participant age")
-
-
 # let's do some boxplots of the integer variables
 
 #chd$age <- as.integer(chd$age)
@@ -28,7 +24,7 @@ typeof(CHDgroup$outcome)
 
 a <- ggplot(CHDgroup, aes(x = outcome, y = age,))
 a + geom_point(size=3) + geom_jitter(size=2) + 
-  geom_boxplot(alpha=.4, fill=c("navy","yellow2")) +
+  geom_boxplot(alpha=.6, fill=c("navy","yellow2")) +
   labs(title="Participant Age by Outcome", 
        y="Count", x="Participant Age") +
   theme_bw() +
