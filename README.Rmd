@@ -1,0 +1,50 @@
+---
+title: 'Sample Healthcare Analysis Using Cleveland Heart Disease Data'
+author: "Paul G. Smith"
+date: "10/29/2019"
+output: 
+  github_document:
+    toc: true
+    html_preview: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Read in the data set
+
+```{r importData, echo=TRUE, message=TRUE, warning=TRUE}
+# Read in the inital cleveland data set
+source("100_Read in cleveland data.R", echo = TRUE)
+```
+## Convert the variables into formats we need
+
+```{r convertVariables, echo=TRUE, message=TRUE, warning=TRUE}
+# Convert the variables
+source("105_Convert variables.R", echo = TRUE)
+```
+## Create the outcome variables.
+
+```{r createVars, echo=TRUE, message=TRUE, warning=TRUE}
+# Create outcome variables
+source("110_Create outcome variables.R", echo = TRUE)
+```
+## Write the data set
+
+```{r writeDataSet, echo=TRUE, message=TRUE, warning=TRUE}
+# write the data set
+source("190_Write out chd.R", echo = TRUE)
+```
+
+## Create some boxplots
+
+```{r boxplots, echo=TRUE, message=TRUE, warning=TRUE}
+# Read in the inital downloaded BRFSS dataset in SAS XPT format
+source("200_Boxplots.R", echo = TRUE)
+```
+## Create some histograms and other stuff
+
+```{r histograms, echo=TRUE, message=TRUE, warning=TRUE}
+# Read in the inital downloaded BRFSS dataset in SAS XPT format
+source("205_Histograms.R", echo = TRUE)
+```

@@ -46,3 +46,4 @@ a + geom_point(size=3) + geom_jitter(size=2) +
         axis.text.x=element_text(colour="black", size = 9, face="bold"),
         axis.text.y=element_text(colour="black", size = 9, face="bold")) +
   scale_fill_brewer(palette="Accent")
+
