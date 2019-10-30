@@ -6,3 +6,4 @@ group2 <- chd[chd$outcome!=0,]
 
 # check both groups total 302 rows
 nrow(group1) + nrow(group2)
+

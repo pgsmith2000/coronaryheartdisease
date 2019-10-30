@@ -245,11 +245,6 @@ source("205_Histograms.R", echo = TRUE)
     ## 
     ## > b <- ggplot(CHDgroup, aes(x = age))
     ## 
-    ## > b + geom_histogram(bins = 30)
-
-![](README_files/figure-gfm/histograms-1.png)<!-- -->
-
-    ## 
     ## > b + geom_histogram(bins = 30, color = "black", fill = "navy", 
     ## +     alpha = 0.4) + labs(title = "Participant Count by Age", y = "Count", 
     ## +     x = .... [TRUNCATED]
@@ -290,7 +285,7 @@ source("205_Histograms.R", echo = TRUE)
     ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
     ## font family not found in Windows font database
 
-![](README_files/figure-gfm/histograms-2.png)<!-- -->
+![](README_files/figure-gfm/histograms-1.png)<!-- -->
 
     ## 
     ## > ggplot(CHDgroup, aes(sex)) + geom_bar(fill = c("navy", 
@@ -333,7 +328,7 @@ source("205_Histograms.R", echo = TRUE)
     ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
     ## font family not found in Windows font database
 
-![](README_files/figure-gfm/histograms-3.png)<!-- -->
+![](README_files/figure-gfm/histograms-2.png)<!-- -->
 
     ## 
     ## > df <- CHDgroup %>% group_by(sex) %>% summarize(counts = n())
@@ -347,9 +342,9 @@ source("205_Histograms.R", echo = TRUE)
     ## 
     ## > c <- ggplot(df, aes(x = sex, y = counts))
     ## 
-    ## > c + geom_bar(stat = "identity") + geom_text(aes(label = counts), 
-    ## +     vjust = -0.3) + labs(title = "Participant Count by Sex", 
-    ## +     y = "Count", .... [TRUNCATED]
+    ## > c + geom_bar(stat = "identity", fill = c("navy", "yellow2"), 
+    ## +     alpha = 0.7) + geom_text(aes(label = counts), vjust = -0.3) + 
+    ## +     labs(title  .... [TRUNCATED]
 
     ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
     ## font family not found in Windows font database
@@ -387,26 +382,40 @@ source("205_Histograms.R", echo = TRUE)
     ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
     ## font family not found in Windows font database
 
+![](README_files/figure-gfm/histograms-3.png)<!-- -->
+
+    ## 
+    ## > df <- CHDgroup
+    ## 
+    ## > df$sex <- factor(df$sex, levels = levels(df$sex)[order(levels(df$sex), 
+    ## +     decreasing = T)])
+    ## 
+    ## > e <- ggplot(df, aes(x = age))
+    ## 
+    ## > e + geom_histogram(bins = 30, aes(color = sex, fill = sex), 
+    ## +     alpha = 0.4, position = "identity") + scale_color_manual(values = c("navy", 
+    ## +    .... [TRUNCATED]
+
 ![](README_files/figure-gfm/histograms-4.png)<!-- -->
 
     ## 
-    ## > d <- ggplot(CHDgroup, aes(x = age))
-    ## 
-    ## > d + geom_histogram(bins = 30, aes(color = sex), fill = "white", 
-    ## +     position = "identity") + scale_color_manual(values = c("#00AFBB", 
-    ## +     "#E7 ..." ... [TRUNCATED]
+    ## > e + geom_histogram(bins = 30, aes(color = sex, fill = sex), 
+    ## +     alpha = 0.4, position = "identity") + labs(title = "Participant Count by Sex and  ..." ... [TRUNCATED]
 
 ![](README_files/figure-gfm/histograms-5.png)<!-- -->
 
     ## 
-    ## > d + geom_histogram(aes(color = sex, fill = sex), alpha = 0.4, 
-    ## +     position = "identity") + labs(title = "Participant Count by Age and Sex", 
-    ## +    .... [TRUNCATED]
+    ## > e + geom_histogram(bins = 30, aes(color = sex, fill = sex), 
+    ## +     alpha = 0.4, position = "identity") + labs(title = "Participant Count by Sex and  ..." ... [TRUNCATED]
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
-    ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-    ## font family not found in Windows font database
+    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
+    ## family not found in Windows font database
+    
+    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
+    ## family not found in Windows font database
+    
+    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
+    ## family not found in Windows font database
 
     ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
     ## family not found in Windows font database
@@ -425,16 +434,10 @@ source("205_Histograms.R", echo = TRUE)
     
     ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
     ## font family not found in Windows font database
-    
-    ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-    ## font family not found in Windows font database
-    
-    ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-    ## font family not found in Windows font database
-    
-    ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-    ## font family not found in Windows font database
-    
+
+    ## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+    ## x$y, : font family not found in Windows font database
+
     ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
     ## font family not found in Windows font database
     
@@ -454,80 +457,6 @@ source("205_Histograms.R", echo = TRUE)
     ## font family not found in Windows font database
 
 ![](README_files/figure-gfm/histograms-6.png)<!-- -->
-
-    ## 
-    ## > df <- CHDgroup
-    ## 
-    ## > df$sex <- factor(df$sex, levels = levels(df$sex)[order(levels(df$sex), 
-    ## +     decreasing = T)])
-    ## 
-    ## > e <- ggplot(df, aes(x = age))
-    ## 
-    ## > e + geom_histogram(bins = 30, aes(color = sex, fill = sex), 
-    ## +     alpha = 0.4, position = "identity") + scale_color_manual(values = c("navy", 
-    ## +    .... [TRUNCATED]
-
-![](README_files/figure-gfm/histograms-7.png)<!-- -->
-
-    ## 
-    ## > e + geom_histogram(bins = 30, aes(color = sex, fill = sex), 
-    ## +     alpha = 0.4, position = "identity") + labs(title = "Participant Count by Sex and  ..." ... [TRUNCATED]
-
-![](README_files/figure-gfm/histograms-8.png)<!-- -->
-
-    ## 
-    ## > e + geom_histogram(bins = 30, aes(color = sex, fill = sex), 
-    ## +     alpha = 0.4, position = "identity") + labs(title = "Participant Count by Sex and  ..." ... [TRUNCATED]
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-    ## family not found in Windows font database
-    
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-    ## family not found in Windows font database
-    
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-    ## family not found in Windows font database
-    
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-    ## family not found in Windows font database
-    
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-    ## family not found in Windows font database
-    
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-    ## family not found in Windows font database
-    
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-    ## family not found in Windows font database
-    
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-    ## family not found in Windows font database
-    
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-    ## family not found in Windows font database
-
-    ## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-    ## x$y, : font family not found in Windows font database
-
-    ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-    ## font family not found in Windows font database
-    
-    ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-    ## font family not found in Windows font database
-
-    ## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-    ## x$y, : font family not found in Windows font database
-
-    ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-    ## font family not found in Windows font database
-    
-    ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-    ## font family not found in Windows font database
-    
-    ## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-    ## font family not found in Windows font database
-
-![](README_files/figure-gfm/histograms-9.png)<!-- -->
 
 ## Publication Request:
 
